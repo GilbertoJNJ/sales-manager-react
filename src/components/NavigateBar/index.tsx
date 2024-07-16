@@ -13,7 +13,7 @@ const Nav = styled.nav`
 const Ul = styled.ul`
   list-style: none;
   display: flex;
-  gap: 10px;
+  gap: 20px;
   margin: 0;
   padding: 0;
 `;
@@ -28,7 +28,7 @@ const Li = styled.li`
   }
 `;
 
-const Home = () => {
+const NavigateBar = () => {
   return (
     <Nav>
       <Ul>
@@ -40,4 +40,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default NavigateBar;
