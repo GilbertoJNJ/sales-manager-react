@@ -6,12 +6,12 @@ import Invoice from './components/Invoice';
 import styled from 'styled-components';
 
 const MainContainer = styled.div`
-  padding-top: 30px; /* Ajuste conforme a altura da sua barra de navegação */
+  padding-top: 30px;
   height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box; /* Inclui padding e border na largura e altura */
+  box-sizing: border-box;
 `;
 
 function App() {
