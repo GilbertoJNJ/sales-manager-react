@@ -2,7 +2,7 @@ import Background from "../../components/Background";
 import GlobalStyled from "../../components/GlobalStyled";
 import NavigateBar from "../../components/NavigateBar";
 
-const Dashboard = () => {
+const Profile = () => {
   return <>
   <GlobalStyled/>
         <Background />
@@ -10,4 +10,4 @@ const Dashboard = () => {
   </>;
 };
 
-export default Dashboard;
+export default Profile;
