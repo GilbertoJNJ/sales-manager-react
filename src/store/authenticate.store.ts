@@ -1,5 +1,5 @@
 import { action, makeObservable, observable } from "mobx";
-import IUser from "../interfaces/user.model";
+import IUser from "../types/user.model";
 
 class AuthenticateStore {
     isAuthenticated = false;

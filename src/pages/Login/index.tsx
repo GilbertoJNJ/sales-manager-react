@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import authenticateStore from '../../store/authenticate.store';
 import { useNavigate } from 'react-router-dom';
 import GlobalStyled from '../../components/GlobalStyled';
+import axios from 'axios';
+import keycloak from '../../config/keycloak.config';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -60,48 +62,60 @@ export default function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Aqui você pode adicionar a lógica de autenticação
     if (email === '' || password === '') {
       setError('Por favor, preencha todos os campos.');
       return;
     }
 
-    // Simulação de autenticação (substitua com a lógica real)
-    if (email === 'user@example.com' && password === 'password') {
+    try {
+      const response = await axios.post(
+        `${keycloak.url}/realms/${keycloak.realm}/protocol/openid-connect/token`,
+        new URLSearchParams({
+          grant_type: 'password',
+          client_id: keycloak.clientId,
+          client_secret: keycloak.clientSecret,
+          username: email,
+          password: password,
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      );
+      const { access_token } = response.data;
       setError('');
-      // Redirecionar ou fazer login
-      console.log('Login bem-sucedido');
-      authenticateStore.login({email: email, token:"token"});
+      authenticateStore.login({ email: email, token: access_token });
       navigate('/dashboard');
-    } else {
+    } catch (error) {
       setError('Credenciais inválidas.');
     }
   };
 
   return (
     <>
-    <GlobalStyled/>
-    <LoginContainer>
-      <Form onSubmit={handleSubmit}>
-        <h2>Login</h2>
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        <Input
-          type="email"
-          placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button type="submit">Entrar</Button>
-      </Form>
+      <GlobalStyled />
+      <LoginContainer>
+        <Form onSubmit={handleSubmit}>
+          <h2>Login</h2>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          <Input
+            type="email"
+            placeholder="E-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button type="submit">Entrar</Button>
+        </Form>
       </LoginContainer>
     </>
   );
