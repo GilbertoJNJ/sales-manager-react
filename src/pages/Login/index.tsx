@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import authenticateStore from '../../store/authenticate.store';
 import { useNavigate } from 'react-router-dom';
-import GlobalStyled from '../../components/GlobalStyled';
 import axios from 'axios';
 import keycloak from '../../config/keycloak.config';
 
@@ -96,27 +95,24 @@ export default function Login() {
   };
 
   return (
-    <>
-      <GlobalStyled />
-      <LoginContainer>
-        <Form onSubmit={handleSubmit}>
-          <h2>Login</h2>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          <Input
-            type="email"
-            placeholder="E-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            type="password"
-            placeholder="Senha"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button type="submit">Entrar</Button>
-        </Form>
-      </LoginContainer>
-    </>
+    <LoginContainer>
+      <Form onSubmit={handleSubmit}>
+        <h2>Login</h2>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        <Input
+          type="email"
+          placeholder="E-mail"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          type="password"
+          placeholder="Senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button type="submit">Entrar</Button>
+      </Form>
+    </LoginContainer>
   );
 };

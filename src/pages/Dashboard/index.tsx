@@ -1,13 +1,9 @@
 import Background from "../../components/Background";
-import GlobalStyled from "../../components/GlobalStyled";
 import NavigateBar from "../../components/NavigateBar";
 
-const Dashboard = () => {
+export default function Dashboard() {
   return <>
-  <GlobalStyled/>
-        <Background />
-        <NavigateBar />
+    <Background />
+    <NavigateBar />
   </>;
 };
-
-export default Dashboard;

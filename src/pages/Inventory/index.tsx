@@ -1,13 +1,9 @@
 import Background from "../../components/Background";
-import GlobalStyled from "../../components/GlobalStyled";
 import NavigateBar from "../../components/NavigateBar";
 
-const Inventory = () => {
+export default function Inventory() {
   return <>
-  <GlobalStyled/>
-        <Background />
-        <NavigateBar />
+    <Background />
+    <NavigateBar />
   </>;
 };
-
-export default Inventory;
