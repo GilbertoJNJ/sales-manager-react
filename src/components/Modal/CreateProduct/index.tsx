@@ -11,17 +11,8 @@ const ModalContent = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  border-radius: 8px;
-  width: 550px;
-`;
-
-const Form = styled.form`
   background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   border-radius: 8px;
   padding: 20px;
   width: 550px;
@@ -160,7 +151,7 @@ export default function CreateProductModal({ isOpen, onRequestClose }: Props) {
 
     return (
         <Modal isOpen={isOpen} onRequestClose={onRequestClose} ariaHideApp={false} style={customStyles}>
-            <Form onSubmit={handleSubmit}>
+            <ModalContent>
                 <Section>
                     <h2>Criar Produto</h2>
                     <CloseButton onClick={onRequestClose}>
@@ -250,8 +241,8 @@ export default function CreateProductModal({ isOpen, onRequestClose }: Props) {
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </InputWrapper>
-                <Button type="submit">Criar</Button>
-            </Form>
+                <Button onClick={handleSubmit}>Criar</Button>
+            </ModalContent>
         </Modal>
     );
 };

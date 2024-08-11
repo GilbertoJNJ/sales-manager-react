@@ -10,8 +10,7 @@ class AuthenticateStore {
             isAuthenticated: observable,
             user: observable,
             login: action,
-            logout: action,
-            refresh: action
+            logout: action
         })
     }
 
@@ -24,10 +23,6 @@ class AuthenticateStore {
     logout() {
         this.isAuthenticated = false;
         this.user = {email: "", token: "", roles: []}
-    }
-
-    refresh() {
-
     }
 
     getRolesFromToken(token: string): string[] {

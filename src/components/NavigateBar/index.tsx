@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faBell } from '@fortawesome/free-solid-svg-icons';
-import authenticateStore from '../../store/authenticate.store';
 import DropdownMenu from './DropDownMenu';
 
 const Nav = styled.nav`
@@ -20,8 +19,6 @@ const Nav = styled.nav`
 const Section = styled.div`
   display: flex;
   align-items: center;
-  margin: 0;
-  padding: 0;
 `;
 
 const Logo = styled.h1`
