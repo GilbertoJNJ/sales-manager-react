@@ -4,13 +4,15 @@ import NavigateBar from "../../components/NavigateBar";
 import axios from "axios";
 import { styled } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faChevronLeft, faChevronRight, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faChevronLeft, faChevronRight, faPlus, faEllipsisV, faEdit, faEye, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Category, Product } from "../../types/product.model";
 import Title from "../../components/Title";
 import Conteiner from "../../components/Conteiner";
 import authenticateStore from "../../store/authenticate.store";
 import CreateProductModal from "../../components/Modal/CreateProduct";
 import { Table, TableCell, TableHead, TableHeader, TableRow } from "../../components/Table";
+import { Menu, MenuItem, IconButton } from "@mui/material";
+import ViewProductModal from "../../components/Modal/ViewProduct";
 
 const Section = styled.div`
   display: flex;
@@ -97,6 +99,29 @@ export default function Inventory() {
   const [totalElements, setTotalElements] = useState<number>();
   const [totalPages, setTotalPages] = useState<number>();
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, productId: number) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedProductId(productId);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleViewProduct = () => {
+    setIsViewModalOpen(true);
+    handleMenuClose();
+  };
+
+  const handleCloseViewModal = () => {
+    setIsViewModalOpen(false);
+    setSelectedProductId(null);
+  };
+
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1);
@@ -174,6 +199,29 @@ export default function Inventory() {
                     }).format(product.unitPrice)}
                   </TableCell>
                   <TableCell>{product.stockQuantity}</TableCell>
+                  <TableCell>
+                    <IconButton onClick={(event) => handleMenuOpen(event, product.id)} sx={{ fontSize: '16px' }}>
+                      <FontAwesomeIcon icon={faEllipsisV} />
+                    </IconButton>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
+                    >
+                      <MenuItem onClick={handleViewProduct}>
+                        <FontAwesomeIcon icon={faEye} style={{ marginRight: "10px" }} />
+                        Visualizar
+                      </MenuItem>
+                      <MenuItem onClick={() => {/* Lógica para editar */ }}>
+                        <FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />
+                        Editar
+                      </MenuItem>
+                      <MenuItem onClick={() => {/* Lógica para excluir */ }}>
+                        <FontAwesomeIcon icon={faTrash} style={{ marginRight: "10px" }} />
+                        Excluir
+                      </MenuItem>
+                    </Menu>
+                  </TableCell>
                 </TableRow>
               ))}
             </tbody>
@@ -219,6 +267,10 @@ export default function Inventory() {
         isOpen={isModalOpen}
         onRequestClose={() => setIsModalOpen(false)}
       />
+      <ViewProductModal
+      isOpen={isViewModalOpen}
+      onRequestClose={handleCloseViewModal}
+      productId={selectedProductId} />
     </>
   );
 };
