@@ -13,6 +13,7 @@ import CreateProductModal from "../../components/Modal/CreateProduct";
 import { Table, TableCell, TableHead, TableHeader, TableRow } from "../../components/Table";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import ViewProductModal from "../../components/Modal/ViewProduct";
+import UpdateProductModal from "../../components/Modal/UpdateProduct";
 
 const Section = styled.div`
   display: flex;
@@ -103,6 +104,8 @@ export default function Inventory() {
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, productId: number) => {
     setAnchorEl(event.currentTarget);
     setSelectedProductId(productId);
@@ -122,9 +125,33 @@ export default function Inventory() {
     setSelectedProductId(null);
   };
 
+  const handleOpenUpdateModal = (productId: number) => {
+    setSelectedProductId(productId);
+    setIsUpdateModalOpen(true);
+    handleMenuClose(); // Fecha o menu após a seleção
+  };
+
+  const handleCloseUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+    setSelectedProductId(null);
+  };
+
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1);
+  };
+
+  const handleDeleteProduct = async (productId: number) => {
+    const { user } = authenticateStore;
+    try {
+      await axios.delete(`http://localhost:8081/api/v1/products/${productId}`, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      setProducts(products.filter(product => product.id !== productId));
+      handleMenuClose();
+    } catch (error) {
+      console.error('Erro ao excluir produto:', error);
+    }
   };
 
   useEffect(() => {
@@ -200,7 +227,7 @@ export default function Inventory() {
                   </TableCell>
                   <TableCell>{product.stockQuantity}</TableCell>
                   <TableCell>
-                    <IconButton onClick={(event) => handleMenuOpen(event, product.id)} sx={{ fontSize: '16px' }}>
+                    <IconButton onClick={(event) => handleMenuOpen(event, product.id!!)} sx={{ fontSize: '16px' }}>
                       <FontAwesomeIcon icon={faEllipsisV} />
                     </IconButton>
                     <Menu
@@ -212,11 +239,11 @@ export default function Inventory() {
                         <FontAwesomeIcon icon={faEye} style={{ marginRight: "10px" }} />
                         Visualizar
                       </MenuItem>
-                      <MenuItem onClick={() => {/* Lógica para editar */ }}>
+                      <MenuItem onClick={() => {handleOpenUpdateModal(product.id!!)}}>
                         <FontAwesomeIcon icon={faEdit} style={{ marginRight: "10px" }} />
                         Editar
                       </MenuItem>
-                      <MenuItem onClick={() => {/* Lógica para excluir */ }}>
+                      <MenuItem onClick={() => {handleDeleteProduct(product.id!!)}}>
                         <FontAwesomeIcon icon={faTrash} style={{ marginRight: "10px" }} />
                         Excluir
                       </MenuItem>
@@ -270,7 +297,13 @@ export default function Inventory() {
       <ViewProductModal
       isOpen={isViewModalOpen}
       onRequestClose={handleCloseViewModal}
-      productId={selectedProductId} />
+      productId={selectedProductId} 
+      />
+      <UpdateProductModal
+        isOpen={isUpdateModalOpen}
+        onRequestClose={handleCloseUpdateModal}
+        productId={selectedProductId}
+      />
     </>
   );
 };

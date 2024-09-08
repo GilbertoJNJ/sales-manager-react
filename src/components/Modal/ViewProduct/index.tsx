@@ -69,9 +69,14 @@ export default function ViewProductModal({ isOpen, onRequestClose, productId }: 
                     <h2>Detalhes do Produto</h2>
                     <p><strong>ID:</strong> {product?.id}</p>
                     <p><strong>Nome:</strong> {product?.name}</p>
+                    <p><strong>Código:</strong> {product?.code}</p>
+                    <p><strong>Fornecedor:</strong> {product?.supplier}</p>
+                    <p><strong>Unidade de Medida:</strong> {product?.measureUnit}</p>
                     <p><strong>Categoria:</strong> {product?.category}</p>
                     <p><strong>Preço:</strong> {product?.unitPrice}</p>
                     <p><strong>Quantidade em Estoque:</strong> {product?.stockQuantity}</p>
+                    <p><strong>Nível Máximo de Estoque:</strong> {product?.maxStockLevel}</p>
+                    <p><strong>Descrição</strong> {product?.description}</p>
                     <button onClick={onRequestClose}>Fechar</button>
                 </>
             </ModalContent>

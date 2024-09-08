@@ -111,7 +111,7 @@ const customStyles = {
 
 export default function CreateProductModal({ isOpen, onRequestClose }: Props) {
     const [name, setName] = useState<string>("");
-    const [barCode, setBarCode] = useState<string>("");
+    const [code, setCode] = useState<string>("");
     const [category, setCategory] = useState<Category>(Category.OTHER);
     const [unitPrice, setUnitPrice] = useState<number>(0);
     const [stockQuantity, setStockQuantity] = useState<number>(0);
@@ -122,7 +122,7 @@ export default function CreateProductModal({ isOpen, onRequestClose }: Props) {
     const handleSubmit = () => {
         const product = {
             name,
-            barCode,
+            code,
             category: Object.keys(Category).find(key => Category[key as keyof typeof Category] === category),
             unitPrice,
             stockQuantity,
@@ -173,8 +173,8 @@ export default function CreateProductModal({ isOpen, onRequestClose }: Props) {
                         <Input
                             id="barCode"
                             type="text"
-                            value={barCode}
-                            onChange={(e) => setBarCode(e.target.value)}
+                            value={code}
+                            onChange={(e) => setCode(e.target.value)}
                         />
                     </InputWrapper>
                     <InputWrapper>
